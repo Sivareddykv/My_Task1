@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:lightgrey;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        label, input, select {
+            display: block;
+            margin-bottom: 10px;
+        }
+       
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .total-bill {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hotel Booking Registration</h1>
+    <form>
+        <label for="customerName">Customer Name:</label>
+        <input type="text" id="customerName" name="customerName" required>
+        
+        <label for="checkInDate">Check-in Date:</label>
+        <input type="date" id="checkInDate" name="checkInDate" required>
+        
+        <label for="totalDays">Total No of Days:</label>
+        <input type="number" id="totalDays" name="totalDays" required>
+        
+        <label for="totalPersons">Total No of Persons:</label>
+        <input type="number" id="totalPersons" name="totalPersons" required>
+        
+        <label for="roomType">Room Type:</label>
+        <select id="roomType" name="roomType">
+            <option value="Delux">Delux Room</option>
+            <option value="Suite">Suite Room</option>
+        </select>
+        
+        <label for="advanceAmount">Advance Amount:</label>
+        <input type="number" id="advanceAmount" name="advanceAmount" required>
+        
+        <label for="amenities">Amenities:</label>
+        <select id="amenities" name="amenities">
+            <option value="AC">AC</option>
+            <option value="Locker">Locker</option>
+        </select>
+        
+        <button type="submit">Submit</button>
+        <div class="total-bill">
+            <p>Total Room Charges: $<span id="totalRoomCharges">0</span></p>
+            <p>Total Amenities Charges: $<span id="totalAmenitiesCharges">0</span></p>
+            <p>Advance Amount: $<span id="advanceAmountValue">0</span></p>
+            <hr>
+            <p>Total Bill: $<span id="totalBillValue">0</span></p>
+            <p>Total Balance: $<span id="totalbalanceValue">0</span></p>
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const roomTypeSelect = document.getElementById('roomType');
+        const totalDaysInput = document.getElementById('totalDays');
+        const totalPersonsInput = document.getElementById('totalPersons');
+        const advanceAmountInput = document.getElementById('advanceAmount');
+        const totalRoomChargesSpan = document.getElementById('totalRoomCharges');
+        const totalAmenitiesChargesSpan = document.getElementById('totalAmenitiesCharges');
+        const advanceAmountValueSpan = document.getElementById('advanceAmountValue');
+        const totalBillValueSpan = document.getElementById('totalBillValue');
+        const totalbalanceValueSpan = document.getElementById('totalbalanceValue');
+
+
+        roomTypeSelect.addEventListener('change', calculateTotalCharges);
+        totalDaysInput.addEventListener('input', calculateTotalCharges);
+        totalPersonsInput.addEventListener('input', calculateTotalCharges);
+        advanceAmountInput.addEventListener('input', calculateTotalCharges);
+
+        function calculateTotalCharges() {
+            const roomRate = roomTypeSelect.value === 'Delux' ? 2500 : 4000;
+            const totalDays = parseFloat(totalDaysInput.value) || 0;
+            const totalPersons = parseFloat(totalPersonsInput.value) || 0;
+            const advanceAmount = parseFloat(advanceAmountInput.value) || 0;
+
+            const roomCharges = roomRate * totalDays;
+            const amenitiesCharges = totalPersons > 2 ? (totalPersons - 2) * 1000 : 0;
+
+            const totalBill = roomCharges + amenitiesCharges;
+            const balance = totalBill - advanceAmount;
+
+            totalRoomChargesSpan.textContent = roomCharges.toFixed(2);
+            totalAmenitiesChargesSpan.textContent = amenitiesCharges.toFixed(2);
+            advanceAmountValueSpan.textContent = advanceAmount.toFixed(2);
+            totalBillValueSpan.textContent = totalBill.toFixed(2);
+            totalbalanceValueSpan.textContent = balance.toFixed(2);
+        }
+    </script>
+</body>
+</html>
